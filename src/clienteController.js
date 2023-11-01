@@ -45,3 +45,59 @@ exports.buscarClientes = (req, res) => {
     res.json(result[0]); // retorna o primeiro cliente encontrado (deve ser único)
   });
 };
+//Adicionar um novo cliente
+exports.adicionarCliente = (req, res) => {
+  const {cpf, nome, endereco, bairro, complemento, cep, telefone, email, senha} = req.body; // req.body acessa objeto do corpo da requisição que foi recebido.
+
+  const {error} = clienteSchema.validate({cpf, nome, endereco, bairro, complemento, cep, telefone, email, senha});//clienteSchema aqui utilizamos o joi para verificar os dados recebidos e garantir a integridade para só depois adicionar no banco.
+
+  if (error) {
+    res.status(400).json({error:'Dados de cliente inválidos'});
+    return;
+  }
+
+  const novoCliente = {cpf, nome, endereco, bairro, complemento, cep, telefone, email, senha};
+  db.query('INSERT INTO cliente SET ?', novoCliente, (err, result)=>{
+    if (err){
+      console.error('Erro ao adicionar cliente:', err);
+      res.status(500).json({error: 'Erro interno do servidor'});
+      return;
+    }
+    res.json({message: 'Cliente adicionado com sucesso'});
+  });
+};
+
+//Atualizar um cliente
+exports.atualizarCliente = (req, res) => {
+  const{cpf} = req.params;
+  const{nome, endereco, bairro, complemento, cep, telefone, email, senha} = req.body;
+
+  const {error}= clienteSchema.validate({cpf, nome, endereco, bairro, complemento, cep, telefone, email, senha});
+  if (error){
+    res.status(400).json({error: 'Dados de cliente inválidos'});
+    return;
+  }
+  const clienteAtualizado = {nome, endereco, bairro, complemento, cep, telefone, email};
+  db.query('UPDATE cliente SET ? WHERE cpf = ?', [clienteAtualizado, cpf], (err, result)=>{
+    if(err){
+      console.error('Erro ao atualizar cliente:', err);
+      res.status(500).json({error: 'Erro interno do servidor'});
+      return;
+    }
+    res.json({message: 'Cliente atualizado com sucesso'});
+  });
+};
+
+//Deletar um cliente
+exports.deletarCliente = (req,res)=>{
+  const {cpf} = req.params;
+
+  db.query('DELETE FROM cliente WHERE cpf = ?', cpf, (err, result)=>{
+    if(err){
+      console.error('Erro ao deletar cliente:', err);
+      res.status(500).json({ error: 'Erro interno do servidor'});
+      return;
+    }
+    res.json({message: 'Cliente deletado com sucesso'});
+  });
+};
