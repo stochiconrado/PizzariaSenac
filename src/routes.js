@@ -20,4 +20,18 @@ router.post('/produto', produtoController.adicionarProduto);
 router.patch('/produto/:id', produtoController.atualizarProduto);
 router.delete('/produto/:id',produtoController.deletarProduto);
 
+const regiaoController = require('./regiaoController.js');
+router.get('/regiao', regiaoController.listarRegiao);
+router.get('/regiao/:id', regiaoController.buscarRegiao);
+router.post('/regiao', regiaoController.adicionarRegiao);
+router.patch('/regiao/:id', regiaoController.atualizarRegiao);
+router.delete('/regiao/:id', regiaoController.deletarRegiao);
+
+const entregadorController = require('./entregadorController.js');
+router.get('/entregador', entregadorController.listarEntregador);
+router.get('/entregador/:id', entregadorController.buscarEntregador);
+router.post('/entregador', entregadorController.adicionarEntregador);
+router.patch('/entregador/:id', entregadorController.atualizarEntregador);
+router.delete('/entregador/:id', entregadorController.deletarEntregador);
+
 module.exports = router;

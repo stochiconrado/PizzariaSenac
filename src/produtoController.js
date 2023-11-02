@@ -29,7 +29,7 @@ exports.buscarProduto = (req,res) =>{
       return;
     }
     if(result.length===0){
-      res.status(404).json({error: 'Client not found'});
+      res.status(404).json({error: 'Product not found'});
       return;
     }
     res.json(result[0]);
