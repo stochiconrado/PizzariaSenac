@@ -19,10 +19,9 @@ exports.listarProduto = (req,res) =>{
     res.json(result);
   });
 };
-
 exports.buscarProduto = (req,res) =>{
-  const {id} = req.params;
-  db.query('SELECT * FROM produto WHERE id = ?', id, (err,result) => {
+  const {nome_produto} = req.params;
+  db.query('SELECT * FROM produto WHERE id = ?',id, (err,result) => {
     if (err){
       console.error('Erro ao buscar produto', err);
       res.status(500).json({error: 'Erro interno do servidor'});
@@ -33,6 +32,22 @@ exports.buscarProduto = (req,res) =>{
       return;
     }
     res.json(result[0]);
+  });
+};
+
+exports.buscarProdutoNome = (req,res) =>{
+  const {nome_produto} = req.params;
+  db.query('SELECT * FROM produto WHERE nome_produto LIKE ?',[`${nome_produto}%`], (err,result) => {
+    if (err){
+      console.error('Erro ao buscar produto', err);
+      res.status(500).json({error: 'Erro interno do servidor'});
+      return;
+    }
+    if(result.length===0){
+      res.status(404).json({error: 'Product not found'});
+      return;
+    }
+    res.json(result);
   });
 };
 

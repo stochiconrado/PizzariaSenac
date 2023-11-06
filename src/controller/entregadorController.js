@@ -36,6 +36,22 @@ exports.buscarEntregador = (req,res)=>{
   });
 };
 
+exports.buscarEntregadorNome = (req,res)=>{
+  const{nome_entregador} = req.params;
+  db.query('SELECT * FROM entregador WHERE nome_entregador LIKE ?',[`${nome_entregador}`], (err, result) =>{
+    if(err){
+      console.error('Erro ao buscar entregador:', err);
+      res.status(500).jsaon({error: 'Erro interno do servidor'});
+      return;
+    }
+    if(result.length === 0){
+      res.status(404).json({error: 'Driver not found'});
+      return;
+    }
+    res.json(result[0]);
+  });
+};
+
 exports.adicionarEntregador = (req, res)=>{
   const {cnh, nome_entregador, telefone, id_regiao} = req.body;
   const{error} = entregadorSchema.validate({cnh, nome_entregador, telefone, id_regiao});

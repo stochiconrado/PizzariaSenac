@@ -2,7 +2,7 @@ const db = require('./db');
 const Joi = require('joi');
 
 const regiaoSchema = Joi.object({
-  id_regiao:Joi.string().required(),
+  id:Joi.string().required(),
   nome_regiao: Joi.string().required(),
   bairros: Joi.string().required(),
 });
@@ -19,10 +19,10 @@ exports.listarRegiao = (req, res) => {
 };
 
 exports.buscarRegiao = (req, res) => {
-  const {id_regiao} = req.params;
-  db.query('SELECT * FROM regiao WHERE id_regiao = ?', id_regiao, (err,result)=>{
+  const {bairros} = req.params;
+  db.query('SELECT * FROM regiao WHERE bairros LIKE ?', [`${bairros}%`], (err,result)=>{
     if(err){
-      console.error('Erro ao buscar região', err);
+      console.error('Erro ao buscar bairro', err);
       res.status(500).json({error: 'Erro interno do servidor'});
       return;
     }
@@ -30,18 +30,18 @@ exports.buscarRegiao = (req, res) => {
       res.status(404).json({error: 'Region not found'});
       return;
     }
-    res.json(result[0]);
+    res.json(result); 
   });
 };
 
 exports.adicionarRegiao = (req, res) => {
-  const {id_regiao,nome_regiao, bairros} = req.body;
-  const {error} = regiaoSchema.validate({id_regiao,nome_regiao,bairros});
+  const {id,nome_regiao, bairros} = req.body;
+  const {error} = regiaoSchema.validate({id,nome_regiao,bairros});
   if(error){
     res.status(400).json({error: 'Dados de região inválido'});
     return;
   }
-  const novaRegiao={id_regiao,nome_regiao,bairros};
+  const novaRegiao={id,nome_regiao,bairros};
   db.query('INSERT INTO regiao SET ?', novaRegiao, (err, result)=>{
     if(err){
       console.error('Erro ao adicionar região', err);
@@ -53,15 +53,15 @@ exports.adicionarRegiao = (req, res) => {
 };
 
 exports.atualizarRegiao = (req, res)=>{
-  const {id_regiao}= req.params;
+  const {id}= req.params;
   const{nome_regiao, bairros} = req.body;
-  const{error}=regiaoSchema({id_regiao, nome_regiao, bairros});
+  const{error}=regiaoSchema({id, nome_regiao, bairros});
   if(error){
     res.status(400).json({error: 'Dados de região inválidos'});
     return;
   }
-  const regiaoAtualizada = {id_regiao, nome_regiao, bairros};
-  db.query('UPDATE produto SET ? WHERE id_regiao = ?', [regiaoAtualizada, id_regiao], (err, result) =>{
+  const regiaoAtualizada = {id, nome_regiao, bairros};
+  db.query('UPDATE produto SET ? WHERE id = ?', [regiaoAtualizada, id], (err, result) =>{
     if(err){
       console.error('Erro ao atualizar região', err);
       res.status(500).json({error: 'Erro interno do servidor'});
@@ -72,8 +72,8 @@ exports.atualizarRegiao = (req, res)=>{
 };
 
 exports.deletarRegiao = (req,res)=>{
-  const{id_regiao} = req.params;
-  db.query('DELETE FROM regiao WHERE id_regiao = ?', id_regiao, (err,result)=>{
+  const{id} = req.params;
+  db.query('DELETE FROM regiao WHERE id = ?', id, (err,result)=>{
     if(err){
       console.error('Erro ao deletar região', err);
       res.status(500).json({error: 'Erro interno do servidor'});
