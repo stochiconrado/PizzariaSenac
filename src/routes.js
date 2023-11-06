@@ -30,7 +30,8 @@ router.delete('/regiao/:id', regiaoController.deletarRegiao);
 
 const entregadorController = require('./controller/entregadorController.js');
 router.get('/entregador', entregadorController.listarEntregador);
-router.get('/entregador/:nome_entregador', entregadorController.buscarEntregador);
+router.get('/entregador/:nome_entregador', entregadorController.buscarEntregadorNome);
+router.get('/entregador/:id', entregadorController.buscarEntregador);
 router.post('/entregador', entregadorController.adicionarEntregador);
 router.patch('/entregador/:id', entregadorController.atualizarEntregador);
 router.delete('/entregador/:id', entregadorController.deletarEntregador);

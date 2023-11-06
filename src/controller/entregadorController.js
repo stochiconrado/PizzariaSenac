@@ -1,4 +1,4 @@
-const db = require('./db');
+const db = require('../db');
 const Joi = require('joi');
 
 const entregadorSchema = Joi.object({
@@ -38,7 +38,7 @@ exports.buscarEntregador = (req,res)=>{
 
 exports.buscarEntregadorNome = (req,res)=>{
   const{nome_entregador} = req.params;
-  db.query('SELECT * FROM entregador WHERE nome_entregador LIKE ?',[`${nome_entregador}`], (err, result) =>{
+  db.query('SELECT * FROM entregador WHERE nome_entregador LIKE ?',[`${nome_entregador}%`], (err, result) =>{
     if(err){
       console.error('Erro ao buscar entregador:', err);
       res.status(500).jsaon({error: 'Erro interno do servidor'});

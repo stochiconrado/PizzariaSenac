@@ -1,4 +1,4 @@
-const db = require('./db'); // importando o nosso módulo de conexão com o banco
+const db = require('../db'); // importando o nosso módulo de conexão com o banco
 const Joi = require('joi'); 
 /* JOI - valida se esta estrutura de banco de dados atende a uma validação criada no banco impedindo que o erro passe or aqui e chegue até o banco */
 

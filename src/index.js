@@ -3,7 +3,7 @@ const express = require('express');//importando express
 const path = require('path'); //importando path o path retorna o caminho de forma dinâmica
 const db = require('./db.js'); //importando o nossso módulo dde conexão com o banco
 const app = express(); //o app irá receber o express e todas as suas dependências
-const routes = require('../routes.js'); //módulo de routes
+const routes = require('./routes.js'); //módulo de routes
 
 app.use(express.json()); // aqui trnasformamos os dados que chegam como binário em json
 
