@@ -6,7 +6,11 @@ router.get('/', (req, res) =>{
   res.sendFile(path.join(__dirname+'/pages/home.html'))
 });
 
+const loginController = require('./controller/loginController.js');
+router.post('/login', loginController.loginCliente);
+
 const clienteController = require('./controller/clienteController.js');
+router.use('/clientes', loginController.autenticarToken);
 router.get('/clientes', clienteController.listarClientes);
 router.get('/clientes/:cpf', clienteController.buscarClientes);
 router.post('/clientes', clienteController.adicionarCliente); //POST: Aceita criar algum objeto do servidor.
@@ -15,8 +19,8 @@ router.delete('/clientes/:cpf',clienteController.deletarCliente);//DELETE: Infor
 
 const produtoController = require('./controller/produtoController.js');
 router.get('/produto', produtoController.listarProduto);
-router.get('/produto/:id', produtoController.buscarProduto);
-router.get('/produto/nome/:nome_produto', produtoController.buscarProdutoNome);
+//router.get('/produto/:id', produtoController.buscarProduto);
+router.get('/produto/:nome_produto', produtoController.buscarProdutoNome);
 router.post('/produto', produtoController.adicionarProduto);
 router.patch('/produto/:id', produtoController.atualizarProduto);
 router.delete('/produto/:id',produtoController.deletarProduto);
@@ -31,7 +35,7 @@ router.delete('/regiao/:id', regiaoController.deletarRegiao);
 const entregadorController = require('./controller/entregadorController.js');
 router.get('/entregador', entregadorController.listarEntregador);
 router.get('/entregador/:nome_entregador', entregadorController.buscarEntregadorNome);
-router.get('/entregador/:id', entregadorController.buscarEntregador);
+//router.get('/entregador/:id', entregadorController.buscarEntregador);
 router.post('/entregador', entregadorController.adicionarEntregador);
 router.patch('/entregador/:id', entregadorController.atualizarEntregador);
 router.delete('/entregador/:id', entregadorController.deletarEntregador);

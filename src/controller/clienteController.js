@@ -1,6 +1,7 @@
 const db = require('../db'); // importando o nosso módulo de conexão com o banco
 const Joi = require('joi'); 
 /* JOI - valida se esta estrutura de banco de dados atende a uma validação criada no banco impedindo que o erro passe or aqui e chegue até o banco */
+const bcrypt = require('bcrypt');
 
 //validação dos dados
 const clienteSchema = Joi.object({
@@ -56,14 +57,23 @@ exports.adicionarCliente = (req, res) => {
     return;
   }
 
-  const novoCliente = {cpf, nome, endereco, bairro, complemento, cep, telefone, email, senha};
-  db.query('INSERT INTO cliente SET ?', novoCliente, (err, result)=>{
-    if (err){
-      console.error('Erro ao adicionar cliente:', err);
+  bcrypt.hash(senha, 10, (err, hash) => {
+    if (err) {
+      console.error('Erro ao criptografar a senha:', err);
       res.status(500).json({error: 'Erro interno do servidor'});
       return;
     }
-    res.json({message: 'Cliente adicionado com sucesso'});
+  
+
+    const novoCliente = {cpf, nome, endereco, bairro, complemento, cep, telefone, email, senha:hash};
+      db.query('INSERT INTO cliente SET ?', novoCliente, (err, result)=>{
+      if (err){
+        console.error('Erro ao adicionar cliente:', err);
+        res.status(500).json({error: 'Erro interno do servidor'});
+        return;
+      }
+      res.json({message: 'Cliente adicionado com sucesso'});
+    });
   });
 };
 
