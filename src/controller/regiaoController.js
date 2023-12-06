@@ -2,7 +2,6 @@ const db = require('../db');
 const Joi = require('joi');
 
 const regiaoSchema = Joi.object({
-  id:Joi.string().required(),
   nome_regiao: Joi.string().required(),
   bairros: Joi.string().required(),
 });
@@ -35,13 +34,13 @@ exports.buscarRegiao = (req, res) => {
 };
 
 exports.adicionarRegiao = (req, res) => {
-  const {id,nome_regiao, bairros} = req.body;
-  const {error} = regiaoSchema.validate({id,nome_regiao,bairros});
+  const {nome_regiao, bairros} = req.body;
+  const {error} = regiaoSchema.validate({nome_regiao,bairros});
   if(error){
     res.status(400).json({error: 'Dados de região inválido'});
     return;
   }
-  const novaRegiao={id,nome_regiao,bairros};
+  const novaRegiao={nome_regiao,bairros};
   db.query('INSERT INTO regiao SET ?', novaRegiao, (err, result)=>{
     if(err){
       console.error('Erro ao adicionar região', err);
@@ -55,13 +54,13 @@ exports.adicionarRegiao = (req, res) => {
 exports.atualizarRegiao = (req, res)=>{
   const {id}= req.params;
   const{nome_regiao, bairros} = req.body;
-  const{error}=regiaoSchema({id, nome_regiao, bairros});
+  const{error}=regiaoSchema.validate({nome_regiao, bairros});
   if(error){
     res.status(400).json({error: 'Dados de região inválidos'});
     return;
   }
-  const regiaoAtualizada = {id, nome_regiao, bairros};
-  db.query('UPDATE produto SET ? WHERE id = ?', [regiaoAtualizada, id], (err, result) =>{
+  const regiaoAtualizada = {nome_regiao, bairros};
+  db.query('UPDATE regiao SET ? WHERE id = ?', [regiaoAtualizada, id], (err, result) =>{
     if(err){
       console.error('Erro ao atualizar região', err);
       res.status(500).json({error: 'Erro interno do servidor'});

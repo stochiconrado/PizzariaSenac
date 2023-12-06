@@ -2,7 +2,6 @@ const db = require('../db');
 const Joi = require('joi');
 
 const entregadorSchema = Joi.object({
-  id: Joi.string().required(),
   cnh: Joi.string().length(9).required(),
   nome_entregador: Joi.string().required(),
   telefone: Joi.string().required(),
@@ -38,7 +37,7 @@ exports.buscarEntregador = (req,res)=>{
 
 exports.buscarEntregadorNome = (req,res)=>{
   const{nome_entregador} = req.params;
-  db.query('SELECT * FROM entregador WHERE nome_entregador LIKE ?',[`${nome_entregador}%`], (err, result) =>{
+  db.query('SELECT * FROM entregador WHERE nome_entregador LIKE ?',[`${nome_entregador}%`],(err, result) =>{
     if(err){
       console.error('Erro ao buscar entregador:', err);
       res.status(500).jsaon({error: 'Erro interno do servidor'});
@@ -91,7 +90,7 @@ exports.atualizarEntregador = (req,res) =>{
 
 exports.deletarEntregador = (req,res)=>{
   const{id} = req.params;
-  db.query('DELETE FROM entregador WHERE cpf = ?', id, (err, result)=>{
+  db.query('DELETE FROM entregador WHERE cnh = ?', id, (err, result)=>{
     if(err){
       console.error('Erro ao deletar entregador:', err);
       res.status(500).json({ error: 'Erro interno do servidor'});

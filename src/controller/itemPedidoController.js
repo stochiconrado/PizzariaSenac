@@ -2,7 +2,6 @@ const db = require('../db');
 const Joi = require('joi');
 
 const itemPedidoSchema = Joi.object({
-  id: Joi.string().required(),
   qtde: Joi.string().required(),
   valor_parcial: Joi.string().required(),
   id_produto: Joi.string().required(),
@@ -39,13 +38,13 @@ exports.buscarItemPedido = (req, res) => {
 exports.atualizarItemPedido = (req, res) => {
   const {id} = req.params;
   const {qtde, valor_parcial, id_produto, id_pedido} = req.body;
-  const {error}=itemPedidoSchema({id, qtde, valor_parcial, id_produto, id_pedido});
+  const {error}=itemPedidoSchema.validate({qtde, valor_parcial, id_produto, id_pedido});
   if(error){
     res.status(400).json({error: 'dados inválidos'});
     return;
   }
-  const pedidoAtualizado = {id, qtde, valor_parcial, id_produto, id_pedido};
-  db.query('UPDATE pedido SET ? item_pedido = ?', [pedidoAtualizado, id],(err,result) =>{
+  const pedidoAtualizado = {qtde, valor_parcial, id_produto, id_pedido};
+  db.query('UPDATE item_pedido SET ? WHERE id = ?', [pedidoAtualizado, id],(err,result) =>{
     if(err){
       console.error('erro ao atualizar pedido', err);
       res.status(500).json({error: 'Erro interno do servidor'});
