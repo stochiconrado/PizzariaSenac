@@ -1,3 +1,8 @@
 node_modules
 fibonacci.js
 fibonacci.js
+.test.js
+.spec.js
+/test
+/coverage
+/src/test.js

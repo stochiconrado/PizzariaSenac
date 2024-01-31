@@ -10,12 +10,12 @@ const loginController = require('./controller/loginController.js');
 router.post('/login', loginController.loginCliente);
 
 const clienteController = require('./controller/clienteController.js');
-router.use('/clientes', loginController.autenticarToken);
-router.get('/clientes', clienteController.listarClientes);
-router.get('/clientes/:cpf', clienteController.buscarClientes);
+//router.use('/clientes', loginController.autenticarToken, clienteController.listarClientes);
+router.get('/clientes', loginController.autenticarToken, clienteController.listarClientes);
+router.get('/clientes/:cpf', loginController.autenticarToken, clienteController.buscarClientes);
 router.post('/clientes', clienteController.adicionarCliente); //POST: Aceita criar algum objeto do servidor.
-router.patch('/clientes/:cpf', clienteController.atualizarCliente); //PUT: Aceita substituir algum objeto do servidor. PATCH: Aceita alterar algum objeto do servidor
-router.delete('/clientes/:cpf',clienteController.deletarCliente);//DELETE: Informa por meio do URL o objeto a ser deletado
+router.patch('/clientes/:cpf', loginController.autenticarToken, clienteController.atualizarCliente); //PUT: Aceita substituir algum objeto do servidor. PATCH: Aceita alterar algum objeto do servidor
+router.delete('/clientes/:cpf', loginController.autenticarToken, clienteController.deletarCliente);//DELETE: Informa por meio do URL o objeto a ser deletado
 
 const produtoController = require('./controller/produtoController.js');
 router.get('/produto', produtoController.listarProduto);

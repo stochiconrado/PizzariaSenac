@@ -87,7 +87,15 @@ exports.atualizarCliente = (req, res) => {
     res.status(400).json({error: 'Dados de cliente inválidos'});
     return;
   }
-  const clienteAtualizado = {nome, endereco, bairro, complemento, cep, telefone, email};
+
+  bcrypt.hash(senha, 10, (err, hash) => {
+    if (err) {
+      console.error('Erro ao criptografar a senha:', err);
+      res.status(500).json({error: 'Erro interno do servidor'});
+      return;
+    }
+
+  const clienteAtualizado = {nome, endereco, bairro, complemento, cep, telefone, email,senha:hash};
   db.query('UPDATE cliente SET ? WHERE cpf = ?', [clienteAtualizado, cpf], (err, result)=>{
     if(err){
       console.error('Erro ao atualizar cliente:', err);
@@ -96,6 +104,7 @@ exports.atualizarCliente = (req, res) => {
     }
     res.json({message: 'Cliente atualizado com sucesso'});
   });
+});
 };
 
 //Deletar um cliente

@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node node_modules/jest/bin/jest.js",
+    "test:watch": "node node_modules/jest/bin/jest.js --watchAll",
+    "test:coverage": "node node_modules/jest/bin/jest.js --coverage",
     "dev": "node --watch src/index.js"
   },
   "keywords": [],
@@ -17,5 +19,8 @@
     "joi": "^17.11.0",
     "jsonwebtoken": "^9.0.2",
     "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }
