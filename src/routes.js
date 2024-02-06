@@ -19,11 +19,11 @@ router.delete('/clientes/:cpf', loginController.autenticarToken, clienteControll
 
 const produtoController = require('./controller/produtoController.js');
 router.get('/produto', produtoController.listarProduto);
-//router.get('/produto/:id', produtoController.buscarProduto);
-router.get('/produto/:nome_produto', produtoController.buscarProdutoNome);
-router.post('/produto', produtoController.adicionarProduto);
-router.patch('/produto/:id', produtoController.atualizarProduto);
-router.delete('/produto/:id',produtoController.deletarProduto);
+router.get('/produto/:id', produtoController.buscarProdutoId);
+router.get('/produto/nome/:nome_produto', produtoController.buscarProdutoNome);
+router.post('/produto', loginController.autenticarToken, produtoController.adicionarProduto);
+router.patch('/produto/:id', loginController.autenticarToken, produtoController.atualizarProduto);
+router.delete('/produto/:id',loginController.autenticarToken, produtoController.deletarProduto);
 
 const regiaoController = require('./controller/regiaoController.js');
 router.get('/regiao', regiaoController.listarRegiao);
@@ -41,8 +41,10 @@ router.patch('/entregador/:id', entregadorController.atualizarEntregador);
 router.delete('/entregador/:id', entregadorController.deletarEntregador);
 
 const pedidoController = require('./controller/pedidoController.js');
+router.use('/pedidos', loginController.autenticarToken)
 router.get('/pedidos', pedidoController.listarPedido);
 router.get('/pedidos/:id', pedidoController.buscarPedido);
+router.get('/pedidos/cpf/:cpf', pedidoController.buscarPedidosCpf);
 router.post('/pedidos', pedidoController.adicionarPedido);
 router.patch('/pedidos/:id', pedidoController.atualizarPedido);
 router.delete('/pedidos/:id', pedidoController.deletarPedido);

@@ -1,5 +1,6 @@
 const db = require('../db');
 const Joi = require('joi');
+//const bcrypt = require('bcrypt');
 
 const produtoSchema = Joi.object({
   nome_produto:Joi.string().required(),
@@ -18,8 +19,8 @@ exports.listarProduto = (req,res) =>{
     res.json(result);
   });
 };
-exports.buscarProduto = (req,res) =>{
-  const {nome_produto} = req.params;
+exports.buscarProdutoId = (req,res) =>{
+  const {id} = req.params;
   db.query('SELECT * FROM produto WHERE id = ?',id, (err,result) => {
     if (err){
       console.error('Erro ao buscar produto', err);
@@ -58,6 +59,8 @@ exports.adicionarProduto = (req,res)=> {
     res.status(400).json({error:'Dados de produto inválido'});
     return;
   }
+
+
   const novoProduto={nome_produto, descricao, valor, imagem};
   db.query('INSERT INTO produto SET ?', novoProduto, (err, result)=>{
     if(err){
@@ -67,7 +70,7 @@ exports.adicionarProduto = (req,res)=> {
     }
     res.json({message: 'Produto adicionado com sucesso'})
   });
-};
+  };
 
 exports.atualizarProduto = (req, res) => {
   const {id} = req.params;
@@ -77,6 +80,7 @@ exports.atualizarProduto = (req, res) => {
     res.status(400).json({error:'Dados de produto inválidos'});
     return;
   }
+  
   const produtoAtualizado ={nome_produto, descricao, valor, imagem};
   db.query('UPDATE produto SET ? WHERE id = ?', [produtoAtualizado, id], (err, result) => {
     if(err){

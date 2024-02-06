@@ -36,6 +36,25 @@ exports.buscarPedido = (req, res) => {
   });
 };
 
+exports.buscarPedidosCpf = (req, res) => {
+  const { cpf } = req.params;
+
+  db.query('SELECT * FROM pedido WHERE cpf = ?', cpf, (err, result) => {
+    if (err) {
+      console.error('Erro ao buscar pedidos por CPF:', err);
+      res.status(500).json({ error: 'Erro interno do servidor' });
+      return;
+    }
+
+    if (result.length === 0) {
+      res.status(404).json({ error: 'Nenhum pedido encontrado para este CPF' });
+      return;
+    }
+
+    res.json(result);
+  });
+};  
+
 exports.adicionarPedido = (req, res) => {
   const {forma_pagto, qtde_itens, valor_total,cpf, id_entregador} = req.body;
   const{error} = pedidoSchema.validate({forma_pagto, qtde_itens, valor_total, cpf, id_entregador});
