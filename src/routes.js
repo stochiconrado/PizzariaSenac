@@ -12,7 +12,8 @@ router.post('/login', loginController.loginCliente);
 const clienteController = require('./controller/clienteController.js');
 //router.use('/clientes', loginController.autenticarToken, clienteController.listarClientes);
 router.get('/clientes', loginController.autenticarToken, clienteController.listarClientes);
-router.get('/clientes/:cpf', loginController.autenticarToken, clienteController.buscarClientes);
+router.get('/clientes/:cpf', loginController.autenticarToken, clienteController.buscarClientesCPF);
+router.get('/clientes/nome/:nome', loginController.autenticarToken, clienteController.buscarClientesNome);
 router.post('/clientes', clienteController.adicionarCliente); //POST: Aceita criar algum objeto do servidor.
 router.patch('/clientes/:cpf', loginController.autenticarToken, clienteController.atualizarCliente); //PUT: Aceita substituir algum objeto do servidor. PATCH: Aceita alterar algum objeto do servidor
 router.delete('/clientes/:cpf', loginController.autenticarToken, clienteController.deletarCliente);//DELETE: Informa por meio do URL o objeto a ser deletado

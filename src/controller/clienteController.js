@@ -30,7 +30,7 @@ exports.listarClientes = (req, res) =>{
 };
 
 //Buscar um único cliente por primary key = CPF
-exports.buscarClientes = (req, res) => {
+exports.buscarClientesCPF = (req, res) => {
   const {cpf} = req.params; // req.params acessa os parametros
 
   db.query('SELECT * FROM cliente WHERE cpf = ?', cpf, (err, result) => {
@@ -44,6 +44,22 @@ exports.buscarClientes = (req, res) => {
       return;
     }
     res.json(result[0]); // retorna o primeiro cliente encontrado (deve ser único)
+  });
+};
+
+exports.buscarClientesNome = (req, res) => {
+  const {nome}=req.params;
+  db.query('SELECT * FROM cliente WHERE nome LIKE ?', [`%${nome}%`],(err,result) => {
+    if (err){
+      console.error('Erro ao buscar cliente:', err);
+      res.status(500).json({error: 'Erro interno do servidor'});
+      return;
+    }
+    if (result.length===0){
+      res.status(404).json({error: 'Client not found'});
+      return;
+    }
+    res.json(result);
   });
 };
 //Adicionar um novo cliente
