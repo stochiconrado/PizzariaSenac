@@ -10,7 +10,6 @@ const loginController = require('./controller/loginController.js');
 router.post('/login', loginController.loginCliente);
 
 const clienteController = require('./controller/clienteController.js');
-//router.use('/clientes', loginController.autenticarToken, clienteController.listarClientes);
 router.get('/clientes', loginController.autenticarToken, clienteController.listarClientes);
 router.get('/clientes/:cpf', loginController.autenticarToken, clienteController.buscarClientesCPF);
 router.get('/clientes/nome/:nome', loginController.autenticarToken, clienteController.buscarClientesNome);
