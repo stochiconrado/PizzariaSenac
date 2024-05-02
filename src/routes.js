@@ -18,12 +18,12 @@ router.patch('/clientes/:cpf', loginController.autenticarToken, clienteControlle
 router.delete('/clientes/:cpf', loginController.autenticarToken, clienteController.deletarCliente);//DELETE: Informa por meio do URL o objeto a ser deletado
 
 const produtoController = require('./controller/produtoController.js');
-router.get('/produto', produtoController.listarProduto);
-router.get('/produto/:id', produtoController.buscarProdutoId);
-router.get('/produto/nome/:nome_produto', produtoController.buscarProdutoNome);
-router.post('/produto', loginController.autenticarToken, produtoController.adicionarProduto);
-router.patch('/produto/:id', loginController.autenticarToken, produtoController.atualizarProduto);
-router.delete('/produto/:id',loginController.autenticarToken, produtoController.deletarProduto);
+router.get('/produtos', produtoController.listarProduto);
+router.get('/produtos/:id', produtoController.buscarProdutoId);
+router.get('/produtos/nome/:nome_produto', produtoController.buscarProdutoNome);
+router.post('/produtos', loginController.autenticarToken, produtoController.adicionarProduto);
+router.patch('/produtos/:id', loginController.autenticarToken, produtoController.atualizarProduto);
+router.delete('/produtos/:id',loginController.autenticarToken, produtoController.deletarProduto);
 
 const regiaoController = require('./controller/regiaoController.js');
 router.get('/regiao', regiaoController.listarRegiao);
